@@ -57,3 +57,7 @@ def login():
             flash('Login in Unsuccessful. Please check email and pass', 'danger')
             
     return render_template('login.html', title='Login', form=form)
+
+@app.route("/account")
+def account():
+    return render_template('account.html', title="Account")

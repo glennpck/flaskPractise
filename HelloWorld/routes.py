@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect
 from HelloWorld.forms import RegistrationForm, LoginForm
 from HelloWorld.models import User, Post
-from HelloWorld import app
+from HelloWorld import app, db, bcrypt
 
 posts = [
     {
@@ -30,8 +30,17 @@ def about():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
+
+        hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = User(username=form.username.data, 
+                    email=form.email.data, 
+                    password=hashed_pw)
+        
+        db.session.add(user)
+        db.session.commit()
+
         flash(f'Account Created for {form.username.data}!', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
 @app.route("/login", methods=['GET', 'POST'])

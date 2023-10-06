@@ -1,2 +1,2 @@
 # PyPractise
-Practise Repo for flask, bs4, html, css and javascript for Web App Development
+Practise Repo for flask features and structures

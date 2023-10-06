@@ -47,10 +47,13 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        if form.email.data == 'admin@blog.com' and form.password.data == "password":
-            flash(f'Log in successful!', 'success')
+        user = User.query.filter_by(email=form.email.data).first()
+
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
             return redirect(url_for('home'))
+        
         else:
+
             flash('Login in Unsuccessful. Please check email and pass', 'danger')
             
     return render_template('login.html', title='Login', form=form)
